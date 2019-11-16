@@ -3,16 +3,20 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 
- * @LastEditTime: 2019-11-16 11:53:12
+ * @LastEditTime: 2019-11-16 22:06:40
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
 int main(int args, char *argv[])
 {
-    int c = 0;
+    int c = 1;
+    int v0 = 0;
+    path p;
+    dist d;
     Mgraph g;
     char filename[100] = "Text.txt";
     creat(&g, filename, c);
+    dijkstra(g, v0, p, d);  
     return 0;
 }
 
@@ -28,7 +32,7 @@ void creat(Mgraph *g, char *filename, int c)
         {
             fscanf(pFile, "%1s", &g->vers[i]);
         }
-        for (i < 0; i < g->n; i++)
+        for (i = 0; i < g->n; i++)
         {
             for (j = 0; j < g->n; j++)
             {
@@ -61,6 +65,7 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
 {
     boolean final[M];
     int i, j, k, v, min, x;
+    printf("start: %c\n", g.vers[v0]);
     for (v = 0; v < g.n; v++)
     {
         final[v] = FALSE;
@@ -76,7 +81,8 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
     }
     final[v0] = TRUE;
     d[v0] = 0; // 初始时s中只有v0一个结点
-    for (i = 1; i < g.n; i++)
+    // 选出v0到其他顶点的距离最小, 依次加入
+    for (i = 1; i < g.n; i++) // i从1开始是因为少了v0, v0已经被选择入s中
     {
         min = FINITY;
         for (k = 0; k < g.n; k++)
@@ -86,20 +92,21 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
                 v = k;
                 min = d[k];
             }
-            printf("%c---%d\n", g.vers[v], min);
-            if (min == FINITY)
-            {
-                return;
-            }
-            final[v] = TRUE;
         }
-    }
-    for (k = 0; k < g.n; k++)
-    {
-        if (!final[k] && (min + g.edges[v][k] < d[k]))
+        // 输出本次入选的顶点距离
+        printf("%c---%d\n", g.vers[v], min);
+        if (min == FINITY)
         {
-            d[k] = min + g.edges[v][k];
-            p[k] = v;
+            return;
+        }
+        final[v] = TRUE;
+        for (k = 0; k < g.n; k++)
+        {
+            if (!final[k] && (min + g.edges[v][k] < d[k]))
+            {
+                d[k] = min + g.edges[v][k];
+                p[k] = v; // 寻找当前结点的前驱
+            }
         }
     }
-}
+} // 活该单身.md

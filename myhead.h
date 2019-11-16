@@ -25,3 +25,5 @@ typedef struct{
 // Ç°ÏòÉùÃ÷¿é
 
 void creat(Mgraph *g, char *filename, int c);
+
+void dijkstra(Mgraph g, int v0, path p, dist d);
