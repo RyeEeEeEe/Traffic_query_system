@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 
- * @LastEditTime: 2019-11-19 10:22:45
+ * @LastEditTime: 2019-11-19 10:26:25
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -117,8 +117,7 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
     for(int i = 0; i < g.n; i++){
         printf("%d ", d[i]);
     }
-} // 瑞, 我真的想你啊;
-// 弄明白这里d[M], p[M]指的是什么, 不然玩个锤子
+}
 
 void print_gpd(Mgraph g, path p, dist d){
     int st[M], i, pre, top = -1;
