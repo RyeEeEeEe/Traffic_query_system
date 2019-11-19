@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 10:00:47
  * @Version: 
- * @LastEditTime: 2019-11-16 10:27:15
+ * @LastEditTime: 2019-11-19 10:18:13
  * @LastEditors: Liu Kai
  */
 #include <stdio.h>
@@ -25,5 +25,5 @@ typedef struct{
 // Ç°ÏòÉùÃ÷¿é
 
 void creat(Mgraph *g, char *filename, int c);
-
 void dijkstra(Mgraph g, int v0, path p, dist d);
+void print_gpd(Mgraph g, path p, dist d);

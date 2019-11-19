@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 
- * @LastEditTime: 2019-11-16 22:06:40
+ * @LastEditTime: 2019-11-19 10:22:45
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -17,6 +17,7 @@ int main(int args, char *argv[])
     char filename[100] = "Text.txt";
     creat(&g, filename, c);
     dijkstra(g, v0, p, d);  
+    print_gpd(g, p, d);
     return 0;
 }
 
@@ -69,7 +70,7 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
     for (v = 0; v < g.n; v++)
     {
         final[v] = FALSE;
-        d[v] = g.edges[v0][v];
+        d[v] = g.edges[v0][v]; // d中保存的是源点到其他结点的距离
         if (d[v] < FINITY && d[v] != 0)
         {
             p[v] = v0; // p[v]用来保存路径
@@ -109,4 +110,28 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
             }
         }
     }
-} // 活该单身.md
+    for(int i = 0; i < g.n; i++){
+        printf("%d ", p[i]);
+    }
+    printf("\n");
+    for(int i = 0; i < g.n; i++){
+        printf("%d ", d[i]);
+    }
+} // 瑞, 我真的想你啊;
+// 弄明白这里d[M], p[M]指的是什么, 不然玩个锤子
+
+void print_gpd(Mgraph g, path p, dist d){
+    int st[M], i, pre, top = -1;
+    for(int i = -1; i < g.n; i++){
+        printf("\nDistancd: %7d, path: ",d[i]);
+        st[++top] = i;
+        pre = p[i];
+        while(pre != -1){
+            st[++top] = pre;
+            pre = p[pre];
+        }
+        while(top > 0){
+            printf("%2d", st[top--]);
+        }
+    }
+}
