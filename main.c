@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 
- * @LastEditTime: 2019-11-19 10:26:25
+ * @LastEditTime: 2019-11-19 10:26:58
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -16,7 +16,7 @@ int main(int args, char *argv[])
     Mgraph g;
     char filename[100] = "Text.txt";
     creat(&g, filename, c);
-    dijkstra(g, v0, p, d);  
+    dijkstra(g, v0, p, d);
     print_gpd(g, p, d);
     return 0;
 }
@@ -110,26 +110,32 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
             }
         }
     }
-    for(int i = 0; i < g.n; i++){
+    for (int i = 0; i < g.n; i++)
+    {
         printf("%d ", p[i]);
     }
     printf("\n");
-    for(int i = 0; i < g.n; i++){
+    for (int i = 0; i < g.n; i++)
+    {
         printf("%d ", d[i]);
     }
 }
 
-void print_gpd(Mgraph g, path p, dist d){
+void print_gpd(Mgraph g, path p, dist d)
+{
     int st[M], i, pre, top = -1;
-    for(int i = -1; i < g.n; i++){
-        printf("\nDistancd: %7d, path: ",d[i]);
+    for (int i = -1; i < g.n; i++)
+    {
+        printf("\nDistancd: %7d, path: ", d[i]);
         st[++top] = i;
         pre = p[i];
-        while(pre != -1){
+        while (pre != -1)
+        {
             st[++top] = pre;
             pre = p[pre];
         }
-        while(top > 0){
+        while (top > 0)
+        {
             printf("%2d", st[top--]);
         }
     }
