@@ -1,5 +1,8 @@
 4 3
-ABCD
+Atest 1000
+Btest 2000
+Ctest 3000
+Dtest 4000
 0 1 3
 1 2 3
 2 3 3
