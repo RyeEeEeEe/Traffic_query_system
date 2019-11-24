@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 2.0
- * @LastEditTime: 2019-11-24 17:48:25
+ * @LastEditTime: 2019-11-24 18:35:04
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -83,6 +83,18 @@ int main(int args, char *argv[])
         case 4:
             linkPrint(myinfo);
             break;
+        case 5:
+            if (modify(g))
+            {
+                printf("Test.txt has been updated\n");
+            }
+            else{
+                printf("update ERROR\n");
+            }
+            // 重建链表和图
+            myinfo = init();
+            creatM(&g, filename, c);
+            break;
         default:
             printf("Command does not exist\n");
             break;
@@ -104,6 +116,7 @@ void help()
         "dijkstraAlgorithm            dijkstra(Format: dijkstra [startName endName])\n"
         "floydAlgorithm               floyd(Format: floyd [startName endName]\n"
         "linkPrint                    print\n"
+        "modifyTextFile               modify\n"
         "help                         help\n"
         "exit                         exit\n");
 }
@@ -171,7 +184,7 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
     // printf("start: %s\n", g.vers[v0]);
     for (v = 0; v < g.n; v++)
     {
-        final[v] = FALSE;
+        final[v] = false;
         d[0][v] = g.edges[v0][v]; // d中保存的是源点到其他结点的距离
         if (d[0][v] < FINITY && d[0][v] != 0)
         {
@@ -182,7 +195,7 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
             p[0][v] = -1;
         }
     }
-    final[v0] = TRUE;
+    final[v0] = true;
     d[0][v0] = 0; // 初始时s中只有v0一个结点
     // 选出v0到其他顶点的距离最小, 依次加入
     for (i = 1; i < g.n; i++) // i从1开始是因为少了v0, v0已经被选择入s中
@@ -203,7 +216,7 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
         {
             return;
         }
-        final[v] = TRUE;
+        final[v] = true;
         for (k = 0; k < g.n; k++)
         {
             if (!final[k] && (min + g.edges[v][k] < d[0][k]))
@@ -389,4 +402,30 @@ float fareCal(int distance)
         return FLAG_FALL_PRICE * 1.0;
     }
     return (FLAG_FALL_PRICE + (distance - 1) * PRICE);
+}
+
+bool modify(Mgraph g)
+{
+    FILE *pFile;
+    pFile = fopen("Text.txt", "w");
+    if (pFile)
+    {
+        scanf("%d %d", &g.n, &g.e);
+        fprintf(pFile, "%d %d\n", g.n, g.e);
+        int v0, vEnd, w;
+        info scanfInfo;
+        for (int i = 0; i < g.n; i++)
+        {
+            scanf("%s %d", scanfInfo.nameCity, &scanfInfo.sumPersion);
+            fprintf(pFile, "%s %d\n", scanfInfo.nameCity, scanfInfo.sumPersion);
+        }
+        for (int i = 0; i < g.e; i++)
+        {
+            scanf("%d %d %d", &v0, &vEnd, &w);
+            fprintf(pFile, "%d %d %d\n", v0, vEnd, w);
+        }
+        fclose(pFile);
+        return true;
+    }
+    return false;
 }

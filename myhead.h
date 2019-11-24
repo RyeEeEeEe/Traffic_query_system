@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 10:00:47
  * @Version: 
- * @LastEditTime: 2019-11-24 16:50:29
+ * @LastEditTime: 2019-11-24 18:30:10
  * @LastEditors: Liu Kai
  */
 #include <stdio.h>
@@ -15,7 +15,7 @@
 #include <string.h>
 #define FINITY 5000
 // help检索表总数
-#define SELATION 5 
+#define SELATION 6
 #define M 20
 #define MAXSTRING 200
 // 起步价
@@ -59,9 +59,10 @@ info *init();
 info *insert(FILE *pFile, info *head, char *nameCity);
 void linkPrint(info *head);
 float fareCal(int distance);
+bool modify(Mgraph g);
 void help();
 
-// 菜单检索表
-char selarr[SELATION][MAXSTRING] = {"help", "dijkstra", "floyd", "exit", "print"};
+    // 菜单检索表
+    char selarr[SELATION][MAXSTRING] = {"help", "dijkstra", "floyd", "exit", "print", "modify"};
 // 城市检索表
 char cities[M][MAXSTRING];
