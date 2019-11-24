@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 2.0
- * @LastEditTime: 2019-11-24 16:57:01
+ * @LastEditTime: 2019-11-24 17:48:25
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -24,7 +24,7 @@ int main(int args, char *argv[])
     bool exitFlag = false;
     _getcwd(cwdPath, MAXSTRING);
     printf("Current Mgraph saved directory: %s\n", cwdPath);
-    printf("Input Type of Mgraph[directed graph is 1 and undirected graph is 0]:\n");
+    printf("Input Type of Mgraph[directed graph is 1 and undirected graph is 0]:");
     scanf("%d", &c);
     myinfo = init(); // First to init
     creatM(&g, filename, c);
@@ -264,7 +264,6 @@ void print(Mgraph g, path p, dist d, int v0)
 void print(Mgraph g, path p, dist d, int v0, int vEnd)
 {
     int st[M], pre, top = -1;
-    printf("Distancd: %d, Price: %.1f\n", d[v0][vEnd], fareCal(d[v0][vEnd]));
     st[++top] = vEnd;
     pre = p[v0][vEnd];
     while (pre != -1)
@@ -272,16 +271,17 @@ void print(Mgraph g, path p, dist d, int v0, int vEnd)
         st[++top] = pre;
         pre = p[v0][pre];
     }
-    printf("path:\n");
+    printf("path: ");
     while (top > 0)
     {
         printf("%s", g.vers[st[top--]]);
         // if (top != 0)
         // {
-        printf("->");
+        printf(" -> ");
         // }
     }
     printf("%s\n", g.vers[vEnd]);
+    printf("Distancd: %d, Price: %.1f\n", d[v0][vEnd], fareCal(d[v0][vEnd]));
 }
 
 /**
