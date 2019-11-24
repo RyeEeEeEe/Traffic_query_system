@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 
- * @LastEditTime: 2019-11-24 13:03:01
+ * @LastEditTime: 2019-11-24 13:06:24
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -96,9 +96,10 @@ int main(int args, char *argv[])
 void help()
 {
     printf(
-        "help                         help\n"
         "dijkstraAlgorithm            dijkstra(Format: dijkstra [startName endName])\n"
-        "floydAlgorithm               floyd(Format: floyd [startName endName]\n)");
+        "floydAlgorithm               floyd(Format: floyd [startName endName]\n)"
+        "help                         help\n"
+        "exit                         exit\n");
 }
 
 /**
