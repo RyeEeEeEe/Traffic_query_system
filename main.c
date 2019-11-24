@@ -3,32 +3,102 @@
  * @Author: 
  * @Date: 2019-11-16 09:33:34
  * @Version: 
- * @LastEditTime: 2019-11-23 18:32:24
+ * @LastEditTime: 2019-11-24 13:03:01
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
 info *myinfo;
 int main(int args, char *argv[])
 {
-    int c = 1;
-    // 源点
-    int v0 = 0;
-    path p;
-    path mypathDijk;
-    dist d;
+    int c = 0;
+    int v0 = 0;   // 源点
+    int vEnd = 0; // 终点
+    char find0[MAXSTRING], findEnd[MAXSTRING];
+    int sel;
     Mgraph g;
+    path p;
+    dist d;
     char filename[100] = "Text.txt";
-    myinfo = init();
-    creat(&g, filename, c);
-    // dijkstra(g, v0, p, d);
-    // print(g, p, d, v0);
-    floyd(g, p, d);
-    printf("\n");
-    print(g, p, d, 1);
-    printf("\n");
-    print(g, p, d, v0);
-    linkPrint(myinfo);
+    char cwdPath[MAXSTRING];
+    char strsel[MAXSTRING];
+    bool exitFlag = false;
+    _getcwd(cwdPath, MAXSTRING);
+    printf("Current Mgraph saved directory: %s\n", cwdPath);
+    printf("Input Type of Mgraph[directed graph is 1 and undirected graph is 0]:\n");
+    scanf("%d", &c);
+    myinfo = init(); // First to init
+    creatM(&g, filename, c);
+    printf("Input \"help\" for help\n");
+    while (true)
+    {
+        scanf("%s", strsel);
+        for (sel = 0; sel < SELATION; sel++)
+        {
+            if (!strcmp(strsel, selarr[sel]))
+            {
+                break;
+            }
+        }
+        switch (sel)
+        {
+        case 0:
+            help();
+            break;
+        case 1:
+            // dijkstrea算法查找源点到任意结点
+            scanf("%s%s", &find0, &findEnd);
+            for (sel = 0; sel < g.n; sel++)
+            {
+                if (!strcmp(find0, cities[sel]))
+                {
+                    v0 = sel;
+                }
+                if (!strcmp(findEnd, cities[sel]))
+                {
+                    vEnd = sel;
+                }
+            }
+            dijkstra(g, v0, p, d);
+            print(g, p, d, 0, vEnd); // 对于dijk算法来说, print每次从源点开始
+            break;
+        case 2:
+            scanf("%s%s", &find0, &findEnd);
+            for (sel = 0; sel < g.n; sel++)
+            {
+                if (!strcmp(find0, cities[sel]))
+                {
+                    v0 = sel;
+                }
+                if (!strcmp(findEnd, cities[sel]))
+                {
+                    vEnd = sel;
+                }
+            }
+            floyd(g, p, d);
+            print(g, p, d, v0, vEnd);
+            break;
+        case 3:
+            exitFlag = true;
+            break;
+        default:
+            break;
+        }
+        if (exitFlag)
+        {
+            break;
+        }
+    }
+
+    // linkPrint(myinfo);
     return 0;
+}
+
+void help()
+{
+    printf(
+        "help                         help\n"
+        "dijkstraAlgorithm            dijkstra(Format: dijkstra [startName endName])\n"
+        "floydAlgorithm               floyd(Format: floyd [startName endName]\n)");
 }
 
 /**
@@ -36,7 +106,7 @@ int main(int args, char *argv[])
  * @param {type} 
  * @return: 
  */
-void creat(Mgraph *g, char *filename, int c)
+void creatM(Mgraph *g, char *filename, int c)
 {
     int i, j, k, w;
     FILE *pFile;
@@ -48,6 +118,7 @@ void creat(Mgraph *g, char *filename, int c)
         {
             fscanf(pFile, "%s", g->vers[i]);
             myinfo = insert(pFile, myinfo, g->vers[i]);
+            strcpy(cities[i], g->vers[i]);
         }
         for (i = 0; i < g->n; i++)
         {
@@ -87,9 +158,10 @@ void creat(Mgraph *g, char *filename, int c)
  */
 void dijkstra(Mgraph g, int v0, path p, dist d)
 {
-    boolean final[M];
+    bool final[M];
     int i, j, k, v, min, x;
-    printf("start: %s\n", g.vers[v0]);
+    // test print
+    // printf("start: %s\n", g.vers[v0]);
     for (v = 0; v < g.n; v++)
     {
         final[v] = FALSE;
@@ -118,7 +190,8 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
             }
         }
         // 输出本次入选的顶点距离
-        printf("%s---%d\n", g.vers[v], min);
+        // test print
+        // printf("%s---%d\n", g.vers[v], min);
         if (min == FINITY)
         {
             return;
@@ -129,39 +202,44 @@ void dijkstra(Mgraph g, int v0, path p, dist d)
             if (!final[k] && (min + g.edges[v][k] < d[0][k]))
             {
                 d[0][k] = min + g.edges[v][k];
-                p[0][k] = v; // 寻找当前结点的前驱
+                p[0][k] = v; // 寻找当前结点的前驱, 当前驱不存在时为-1
             }
         }
     }
-    for (int i = 0; i < g.n; i++)
-    {
-        printf("%d ", p[0][i]);
-    }
-    printf("\n");
-    for (int i = 0; i < g.n; i++)
-    {
-        printf("%d ", d[0][i]);
-    }
-    printf("\n");
+    // test print
+    // for (int i = 0; i < g.n; i++)
+    // {
+    //     printf("%d ", p[0][i]);
+    // }
+    // printf("\n");
+    // for (int i = 0; i < g.n; i++)
+    // {
+    //     printf("%d ", d[0][i]);
+    // }
+    // printf("\n");
 }
 
 /**
- * @description: 源点到其他结点的最短路径,最小运费, v0表示当前源点
+ * @description: 源点v0到其他结点的最短路径,最小运费, v0表示当前源点
  * @param {type} 
  * @return: 
  */
+/* 
 void print(Mgraph g, path p, dist d, int v0)
 {
-    int st[M], i, pre, top = -1;
-    for (int i = 0; i < g.n; i++)
+    // 依赖st栈寻找前驱后逆序输出
+    int st[M];
+    int i, pre, top = -1;
+    for (i = 0; i < g.n; i++) // i表示正在输出哪个结点的路径
     {
         printf("\nDistancd: %d, path: ", d[v0][i]);
         st[++top] = i;
         pre = p[v0][i];
+        // if(i == 1 && pre == -1) printf("当前节点");
         while (pre != -1)
         {
             st[++top] = pre;
-            pre = p[v0][pre];
+            pre = p[v0][pre]; // 不断访问前驱, 当寻找到-1(无前驱)为止
         }
         while (top > 0)
         {
@@ -169,6 +247,34 @@ void print(Mgraph g, path p, dist d, int v0)
         }
     }
     printf("\n");
+} */
+
+/**
+ * @description: 源点v0到其他结点的最短路径,最小运费, v0表示当前源点, vEnd表示当前终点
+ * @param {type} 
+ * @return: 
+ */
+void print(Mgraph g, path p, dist d, int v0, int vEnd)
+{
+    int st[M], pre, top = -1;
+    printf("Distancd: %d, Price: %.1f\n", d[v0][vEnd], fareCal(d[v0][vEnd]));
+    st[++top] = vEnd;
+    pre = p[v0][vEnd];
+    while (pre != -1)
+    {
+        st[++top] = pre;
+        pre = p[v0][pre];
+    }
+    printf("path:\n");
+    while (top > 0)
+    {
+        printf("%s", g.vers[st[top--]]);
+        // if (top != 0)
+        // {
+        printf("->");
+        // }
+    }
+    printf("%s\n", g.vers[vEnd]);
 }
 
 /**
@@ -246,6 +352,11 @@ info *insert(FILE *pFile, info *head, char *nameCity)
     return head;
 }
 
+/**
+ * @description: 链表输出
+ * @param {type} 
+ * @return: 
+ */
 void linkPrint(info *head)
 {
     info *p, *pre;
@@ -261,4 +372,14 @@ void linkPrint(info *head)
         p = p->next;
     }
     return;
+}
+
+// 起步价 & 路程if(taxi)
+float fareCal(int distance)
+{
+    if (distance <= 1)
+    {
+        return FLAG_FALL_PRICE * 1.0;
+    }
+    return (FLAG_FALL_PRICE + (distance - 1) * PRICE);
 }
