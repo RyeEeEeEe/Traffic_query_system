@@ -1,9 +1,9 @@
 /*
- * @Description: 
+ * @Description: Traffic_query_system
  * @Author: 
  * @Date: 2019-11-16 09:33:34
- * @Version: 
- * @LastEditTime: 2019-11-24 13:06:24
+ * @Version: 2.0
+ * @LastEditTime: 2019-11-24 16:57:01
  * @LastEditors: Liu Kai
  */
 #include "myhead.h"
@@ -80,9 +80,14 @@ int main(int args, char *argv[])
         case 3:
             exitFlag = true;
             break;
+        case 4:
+            linkPrint(myinfo);
+            break;
         default:
+            printf("Command does not exist\n");
             break;
         }
+        printf("Execution completed\n");
         if (exitFlag)
         {
             break;
@@ -97,7 +102,8 @@ void help()
 {
     printf(
         "dijkstraAlgorithm            dijkstra(Format: dijkstra [startName endName])\n"
-        "floydAlgorithm               floyd(Format: floyd [startName endName]\n)"
+        "floydAlgorithm               floyd(Format: floyd [startName endName]\n"
+        "linkPrint                    print\n"
         "help                         help\n"
         "exit                         exit\n");
 }

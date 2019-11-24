@@ -3,7 +3,7 @@
  * @Author: 
  * @Date: 2019-11-16 10:00:47
  * @Version: 
- * @LastEditTime: 2019-11-24 12:47:15
+ * @LastEditTime: 2019-11-24 16:50:29
  * @LastEditors: Liu Kai
  */
 #include <stdio.h>
@@ -14,10 +14,13 @@
 #include <stdbool.h>
 #include <string.h>
 #define FINITY 5000
-#define SELATION 4 // help
+// help检索表总数
+#define SELATION 5 
 #define M 20
 #define MAXSTRING 200
+// 起步价
 #define FLAG_FALL_PRICE 5
+// 每公里单价
 #define PRICE 1.2
 typedef int edgetype;
 typedef char vertextype;
@@ -59,6 +62,6 @@ float fareCal(int distance);
 void help();
 
 // 菜单检索表
-char selarr[SELATION][MAXSTRING] = {"help", "dijkstra", "floyd", "exit"};
+char selarr[SELATION][MAXSTRING] = {"help", "dijkstra", "floyd", "exit", "print"};
 // 城市检索表
 char cities[M][MAXSTRING];
